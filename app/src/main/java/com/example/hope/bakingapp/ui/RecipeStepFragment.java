@@ -126,7 +126,7 @@ public class RecipeStepFragment extends Fragment implements SurfaceHolder.Callba
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        mediaPlayer.stop();
+        mediaPlayer.stop();
 //        mediaPlayer.release();
 //        mediaPlayer = null;
     }
@@ -148,7 +148,7 @@ public class RecipeStepFragment extends Fragment implements SurfaceHolder.Callba
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setDisplay(vidHolder);
             mediaPlayer.setDataSource((String) mSelectedRecipeData.stepsVideos.get(itemIndex));
-            mediaPlayer.prepare();
+            mediaPlayer.prepareAsync();
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         } catch (Exception e) {
