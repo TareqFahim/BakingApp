@@ -1,6 +1,8 @@
 package com.example.hope.bakingapp.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -38,11 +40,22 @@ public class MainActivity extends AppCompatActivity implements FetchJSONAsyncTas
         recipesAsyncTask.execute(jsonUrl);
     }
 
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        int noOfColumns = 1;
+        int noOfColumns;
+        if(isTablet(this)) {
+            noOfColumns = 4;
+        }else {
+            noOfColumns = 1;
+        }
         mRecipeGrid = (RecyclerView) findViewById(R.id.rv_recipes_list);
         GridLayoutManager layoutManager = new GridLayoutManager(this, noOfColumns);
         mRecipeGrid.setLayoutManager(layoutManager);

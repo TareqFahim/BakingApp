@@ -17,6 +17,13 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 public class RecipeStepActivity extends AppCompatActivity implements RecipeStepFragment.Callback{
     private SelectedRecipeData mSelectedRecipeData;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
