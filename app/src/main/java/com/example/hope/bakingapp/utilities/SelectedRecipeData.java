@@ -14,22 +14,26 @@ public class SelectedRecipeData implements Parcelable{
 
     public List ingredients = new ArrayList();
     public List steps = new ArrayList();
-    public List stepsInstruactions = new ArrayList();
+    public List stepsInstructions = new ArrayList();
     public List stepsVideos = new ArrayList();
     public int itemIndex;
+    public String recipeImage;
 
-    public SelectedRecipeData(List ingredients,List steps, List stepsInstructions, List stepsVideos) {
+    public SelectedRecipeData(List ingredients,List steps, List stepsInstructions, List stepsVideos, String recipeImage) {
         this.ingredients = ingredients;
         this.steps = steps;
-        this.stepsInstruactions = stepsInstructions;
+        this.stepsInstructions = stepsInstructions;
         this.stepsVideos = stepsVideos;
+        this.recipeImage = recipeImage;
     }
 
     protected SelectedRecipeData(Parcel in) {
         ingredients = in.readArrayList(ClassLoader.getSystemClassLoader());
         steps = in.readArrayList(ClassLoader.getSystemClassLoader());
-        stepsInstruactions = in.readArrayList(ClassLoader.getSystemClassLoader());
+        stepsInstructions = in.readArrayList(ClassLoader.getSystemClassLoader());
         stepsVideos = in.readArrayList(ClassLoader.getSystemClassLoader());
+        itemIndex = in.readInt();
+        recipeImage = in.readString();
     }
 
     public static final Creator<SelectedRecipeData> CREATOR = new Creator<SelectedRecipeData>() {
@@ -53,7 +57,9 @@ public class SelectedRecipeData implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(ingredients);
         dest.writeList(steps);
-        dest.writeList(stepsInstruactions);
+        dest.writeList(stepsInstructions);
         dest.writeList(stepsVideos);
+        dest.writeInt(itemIndex);
+        dest.writeString(recipeImage);
     }
 }

@@ -2,6 +2,7 @@ package com.example.hope.bakingapp;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.hope.bakingapp.utilities.NetworkUtils;
 
@@ -24,6 +25,7 @@ public class FetchJSONAsyncTask extends AsyncTask<URL, Void, String> {
             json = NetworkUtils.getResponseFromHttpUrl(url);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 //        Log.v(TAG, json);
         return json;
@@ -38,6 +40,8 @@ public class FetchJSONAsyncTask extends AsyncTask<URL, Void, String> {
         if (s != null) {
             super.onPostExecute(s);
             mReturnJson.setJson(s);
+        }else {
+            mReturnJson.setJson(null);
         }
     }
 

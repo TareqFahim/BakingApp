@@ -1,7 +1,6 @@
 package com.example.hope.bakingapp.ui;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,27 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hope.bakingapp.R;
+import com.example.hope.bakingapp.adapters.RecipeDetailsAdapter;
 import com.example.hope.bakingapp.adapters.RecipeGridAdapter;
 import com.example.hope.bakingapp.utilities.FragmentReplacerCallBack;
 import com.example.hope.bakingapp.utilities.SelectedRecipeData;
-import com.example.hope.bakingapp.utilities.SelectedStepData;
 
-import java.net.InterfaceAddress;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecipeDetailsFragment extends Fragment implements RecipeGridAdapter.GridItemClickListener {
+public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdapter.GridItemClickListener {
 
     private View rootView;
     private RecyclerView mDetailsRecyclerView;
     private SelectedRecipeData mSelectedRecipeData;
-    private RecipeGridAdapter mRecipeGridAdapter;
+    private RecipeDetailsAdapter mRecipeDetailsAdapter;
     private FragmentReplacerCallBack mFragmentReplacerCallBack;
     List recipeDetailsList;
-    private SelectedStepData mSelectedStepData;
 
     public RecipeDetailsFragment() {
     }
@@ -45,8 +42,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeGridAdapter
             recipeDetailsList = new ArrayList();
             recipeDetailsList.add("Recipe Ingredients");
             recipeDetailsList.addAll(mSelectedRecipeData.steps);
-            mRecipeGridAdapter = new RecipeGridAdapter(getActivity(), recipeDetailsList, this);
-            mDetailsRecyclerView.setAdapter(mRecipeGridAdapter);
+            mRecipeDetailsAdapter = new RecipeDetailsAdapter(getActivity(), recipeDetailsList, this);
+            mDetailsRecyclerView.setAdapter(mRecipeDetailsAdapter);
         }
     }
 

@@ -86,7 +86,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
             } else {
                 intent = new Intent(this, RecipeStepActivity.class);
                 mSelectedRecipeData.itemIndex = itemIndex - 1;
-                intent.putExtra(getString(R.string.recipe_intent_extra), mSelectedRecipeData);
+                intent.putExtra(getString(R.string.step_intent_extra), mSelectedRecipeData);
                 startActivity(intent);
             }
         }

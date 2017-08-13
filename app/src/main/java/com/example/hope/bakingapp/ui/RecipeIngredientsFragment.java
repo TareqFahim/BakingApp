@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hope.bakingapp.R;
+import com.example.hope.bakingapp.adapters.RecipeDetailsAdapter;
 import com.example.hope.bakingapp.adapters.RecipeGridAdapter;
 import com.example.hope.bakingapp.utilities.SelectedRecipeData;
 
@@ -18,11 +19,11 @@ import com.example.hope.bakingapp.utilities.SelectedRecipeData;
  * Created by Hope on 8/3/2017.
  */
 
-public class RecipeIngredientsFragment extends Fragment implements RecipeGridAdapter.GridItemClickListener {
+public class RecipeIngredientsFragment extends Fragment implements RecipeDetailsAdapter.GridItemClickListener {
 
     View rootView;
     private RecyclerView mIngredientsRecyclerView;
-    private RecipeGridAdapter mIngredientListAdapter;
+    private RecipeDetailsAdapter mIngredientListAdapter;
     private SelectedRecipeData mSelectedRecipeIngredients;
 
     public RecipeIngredientsFragment() {
@@ -36,7 +37,7 @@ public class RecipeIngredientsFragment extends Fragment implements RecipeGridAda
         if(b != null){
 //            mSelectedRecipeIngredients = intent.getParcelableExtra(getString(R.string.ingredients_intent_extra));
             mSelectedRecipeIngredients = b.getParcelable(getString(R.string.recipe_intent_extra));
-            mIngredientListAdapter = new RecipeGridAdapter(getActivity(), mSelectedRecipeIngredients.ingredients, this);
+            mIngredientListAdapter = new RecipeDetailsAdapter(getActivity(), mSelectedRecipeIngredients.ingredients, this);
             mIngredientsRecyclerView.setAdapter(mIngredientListAdapter);
         }
     }

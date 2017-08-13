@@ -7,54 +7,9 @@
     tools:context="com.example.hope.bakingapp.ui.RecipeStepFragment"
     tools:showIn="@layout/activity_recipe_step">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recipe_step_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent" />
 
-        <SurfaceView
-            android:id="@+id/surface_view"
-            android:layout_width="match_parent"
-            android:layout_height="250dp">
-
-        </SurfaceView>
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/instructions_cardview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            card_view:cardBackgroundColor="@color/cardview_shadow_end_color"
-            card_view:cardCornerRadius="4dp">
-
-            <TextView
-                android:id="@+id/instructions_tv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Step Instuctions"
-                android:textSize="30sp" />
-        </android.support.v7.widget.CardView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/previous_step_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Previous" />
-
-            <Button
-                android:id="@+id/next_step_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Next" />
-        </LinearLayout>
-
-    </LinearLayout>
 </ScrollView>

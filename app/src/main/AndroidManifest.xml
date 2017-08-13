@@ -27,9 +27,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.hope.bakingapp.ui.MainActivity" />
         </activity>
-
         <activity android:name=".ui.RecipeIngredientsActivity" />
-
         <activity
             android:name=".ui.RecipeStepActivity"
             android:label="@string/title_activity_recipe_step"
@@ -39,6 +37,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.hope.bakingapp.ui.RecipeDetailsActivity" />
         </activity>
+
+        <receiver android:name=".widget.RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_provider_info" />
+        </receiver>
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

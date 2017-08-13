@@ -8,4 +8,7 @@
     <string name="video_intent_extra">step_video</string>
     <string name="instruction_intent_extra">step_instruction</string>
     <string name="title_activity_recipe_step">RecipeStepActivity</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_intent_extra">widget_extra</string>
 </resources>
