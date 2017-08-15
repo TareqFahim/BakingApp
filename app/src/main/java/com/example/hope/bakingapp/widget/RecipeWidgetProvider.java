@@ -46,12 +46,11 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             mSelectedRecipeData = new SelectedRecipeData(mFavouriteRecipeData.recipeIngredients, null, null, null, null);
         }
         for (int appWidgetId : appWidgetIds) {
-//            Intent activityIntent = new Intent(context, MainActivity.class);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
-            Intent activityIntent = new Intent(context, RecipeIngredientsActivity.class);
-            activityIntent.putExtra("selected_recipe_data", mSelectedRecipeData);
-//            activityIntent.setAction("com.blah.Action");
+            Intent activityIntent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
+//            Intent activityIntent = new Intent(context, RecipeIngredientsActivity.class);
+//            activityIntent.putExtra("selected_recipe_data", mSelectedRecipeData);
+//            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.recipe_ingredient_widget);
             rv.setPendingIntentTemplate(R.id.widget_listview, pendingIntent);
             if (favRecipesNames == null) {
