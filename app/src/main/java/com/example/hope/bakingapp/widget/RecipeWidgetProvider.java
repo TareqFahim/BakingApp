@@ -49,7 +49,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 //            Intent activityIntent = new Intent(context, MainActivity.class);
 //            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
             Intent activityIntent = new Intent(context, RecipeIngredientsActivity.class);
-            activityIntent.putExtra(context.getString(R.string.recipe_intent_extra), mSelectedRecipeData);
+            activityIntent.putExtra("selected_recipe_data", mSelectedRecipeData);
 //            activityIntent.setAction("com.blah.Action");
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.recipe_ingredient_widget);
