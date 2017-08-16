@@ -15,6 +15,9 @@ import com.example.hope.bakingapp.adapters.RecipeDetailsAdapter;
 import com.example.hope.bakingapp.adapters.RecipeGridAdapter;
 import com.example.hope.bakingapp.utilities.SelectedRecipeData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Hope on 8/3/2017.
  */
@@ -22,9 +25,10 @@ import com.example.hope.bakingapp.utilities.SelectedRecipeData;
 public class RecipeIngredientsFragment extends Fragment implements RecipeDetailsAdapter.GridItemClickListener {
 
     View rootView;
-    private RecyclerView mIngredientsRecyclerView;
     private RecipeDetailsAdapter mIngredientListAdapter;
     private SelectedRecipeData mSelectedRecipeIngredients;
+
+    @BindView(R.id.rv_recipe_ingredients_list) RecyclerView mIngredientsRecyclerView;
 
     public RecipeIngredientsFragment() {
 
@@ -35,7 +39,6 @@ public class RecipeIngredientsFragment extends Fragment implements RecipeDetails
         super.onStart();
         Bundle b = getArguments();
         if(b != null){
-//            mSelectedRecipeIngredients = intent.getParcelableExtra(getString(R.string.ingredients_intent_extra));
             mSelectedRecipeIngredients = b.getParcelable(getString(R.string.recipe_intent_extra));
             mIngredientListAdapter = new RecipeDetailsAdapter(getActivity(), mSelectedRecipeIngredients.ingredients, this);
             mIngredientsRecyclerView.setAdapter(mIngredientListAdapter);
@@ -46,7 +49,7 @@ public class RecipeIngredientsFragment extends Fragment implements RecipeDetails
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_recipe_ingredients, container, false);
-        mIngredientsRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_recipe_ingredients_list);
+        ButterKnife.bind(this, rootView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mIngredientsRecyclerView.setLayoutManager(layoutManager);
         mIngredientsRecyclerView.setHasFixedSize(true);

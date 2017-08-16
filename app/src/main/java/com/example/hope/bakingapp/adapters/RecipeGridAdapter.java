@@ -1,18 +1,23 @@
 package com.example.hope.bakingapp.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hope.bakingapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Hope on 8/1/2017.
@@ -21,13 +26,15 @@ import java.util.List;
 public class RecipeGridAdapter extends RecyclerView.Adapter<RecipeGridAdapter.RecipeListViewHolder> {
 
     private List<String> recipesNames = new ArrayList();
+    private List recipeImagesURL = new ArrayList();
     private Context context;
     private GridItemClickListener mGridItemClickListener;
 
-    public RecipeGridAdapter(Context c, List recipesNames, GridItemClickListener clickListener) {
+    public RecipeGridAdapter(Context c, List recipesNames, List recipeImagesURL, GridItemClickListener clickListener) {
         this.context = c;
         this.recipesNames = recipesNames;
         this.mGridItemClickListener = clickListener;
+        this.recipeImagesURL = recipeImagesURL;
     }
 
     @Override
@@ -44,12 +51,16 @@ public class RecipeGridAdapter extends RecyclerView.Adapter<RecipeGridAdapter.Re
     @Override
     public void onBindViewHolder(RecipeListViewHolder viewHolder, final int position) {
         viewHolder.recipeCardTextView.setText(recipesNames.get(position));
-        viewHolder.favBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGridItemClickListener.onGridItemClick(position, "FavBtn");
+        if (recipeImagesURL.get(position).equals(""))
+            viewHolder.recipeImageView.setVisibility(View.GONE);
+        else {
+            viewHolder.recipeImageView.setVisibility(View.VISIBLE);
+            try {
+                Picasso.with(context).load(Uri.parse((String) recipeImagesURL.get(position))).into(viewHolder.recipeImageView);
+            } catch (Exception ex) {
+                Toast.makeText(context, "Error Loading the Image", Toast.LENGTH_SHORT).show();
             }
-        });
+        }
     }
 
     @Override
@@ -58,14 +69,15 @@ public class RecipeGridAdapter extends RecyclerView.Adapter<RecipeGridAdapter.Re
     }
 
     public class RecipeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView recipeCardTextView;
-        Button favBtn;
 
+        @BindView(R.id.recipe_title_tv)
+        TextView recipeCardTextView;
+        @BindView(R.id.recipe_image)
+        ImageView recipeImageView;
 
         public RecipeListViewHolder(View itemView) {
             super(itemView);
-            recipeCardTextView = (TextView) itemView.findViewById(R.id.recipe_title_tv);
-            favBtn = (Button) itemView.findViewById(R.id.fav_btn);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

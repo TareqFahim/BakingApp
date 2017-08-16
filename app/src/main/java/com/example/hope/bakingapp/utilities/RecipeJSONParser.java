@@ -26,6 +26,7 @@ public class RecipeJSONParser implements JSONParser {
         final String OWM_STEP_DESCRIPTION = "shortDescription";
         final String OWM_STEP_INSTRUCTION = "description";
         final String OWM_STEP_VIDEO = "videoURL";
+        final String OWM_STEP_IMAGE = "thumbnailURL";
 
         final String OWM_RECIPE_IMAGE = "image";
 
@@ -37,6 +38,7 @@ public class RecipeJSONParser implements JSONParser {
             List recipeStepDescription = new ArrayList();
             List recipeStepInstruction = new ArrayList();
             List recipeStepVideo = new ArrayList();
+            List recipeStepImage = new ArrayList();
 
             JSONObject recipeObject = recipesArray.getJSONObject(i);
 
@@ -62,7 +64,7 @@ public class RecipeJSONParser implements JSONParser {
 
             JSONArray stepsArray = recipeObject.getJSONArray(OWM_RECIPE_STEPS);
             for (int j = 0; j < stepsArray.length(); j++) {
-                String description, instruction, video;
+                String description, instruction, video, stepImage;
 
                 JSONObject stepObject = stepsArray.getJSONObject(j);
 
@@ -74,10 +76,15 @@ public class RecipeJSONParser implements JSONParser {
 
                 video = stepObject.getString(OWM_STEP_VIDEO);
                 recipeStepVideo.add(video);
+
+                stepImage = stepObject.getString(OWM_STEP_IMAGE);
+                recipeStepImage.add(stepImage);
+
             }
             recipeData.recipeStepDescription.put(recipeId, (ArrayList) recipeStepDescription);
             recipeData.recipeStepInstruction.put(recipeId, (ArrayList) recipeStepInstruction);
             recipeData.recipeStepVideo.put(recipeId, (ArrayList) recipeStepVideo);
+            recipeData.recipeStepImage.put(recipeId, (ArrayList) recipeStepImage);
 
             String image = recipeObject.getString(OWM_RECIPE_IMAGE);
             recipeData.recipeImage.add(image);

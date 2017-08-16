@@ -11,4 +11,6 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="widget_intent_extra">widget_extra</string>
+    <string name="preferences_name">Recipe_Index_Prefs</string>
+    <string name="preferences_recipe_index">recipe_index</string>
 </resources>

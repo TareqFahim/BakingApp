@@ -2,7 +2,6 @@ package com.example.hope.bakingapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,54 +18,59 @@ import com.example.hope.bakingapp.utilities.NetworkUtils;
 import com.example.hope.bakingapp.utilities.RecipeData;
 import com.example.hope.bakingapp.utilities.RecipeJSONParser;
 import com.example.hope.bakingapp.utilities.SelectedRecipeData;
-import com.example.hope.bakingapp.widget.RecipeWidgetProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements FetchJSONAsyncTask.JsonCallBack, RecipeGridAdapter.GridItemClickListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private RecipeGridAdapter mRecipeGridAdapter;
-    private RecyclerView mRecipeGrid;
     private URL jsonUrl;
     private RecipeData recipesData;
     private SelectedRecipeData mSelectedRecipeData;
     private RecipeDbHelper mRecipeDbHelper;
+    FavouriteRecipeData mFavouriteRecipeData;
+
+    @BindView(R.id.rv_recipes_list)
+    RecyclerView mRecipeGrid;
+    ;
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        mRecipeDbHelper = new RecipeDbHelper(this);
+        mFavouriteRecipeData = mRecipeDbHelper.getData();
+
         FetchJSONAsyncTask recipesAsyncTask = new FetchJSONAsyncTask();
         recipesAsyncTask.setCallBackContext(this);
         jsonUrl = NetworkUtils.buildRecipeURL();
         recipesAsyncTask.execute(jsonUrl);
     }
 
-    public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    public boolean isTablet(Context context) {
+        return getResources().getBoolean(R.bool.two_pane);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         int noOfColumns;
         if (isTablet(this)) {
             noOfColumns = 4;
         } else {
             noOfColumns = 1;
         }
-        mRecipeGrid = (RecyclerView) findViewById(R.id.rv_recipes_list);
         GridLayoutManager layoutManager = new GridLayoutManager(this, noOfColumns);
         mRecipeGrid.setLayoutManager(layoutManager);
         mRecipeGrid.setHasFixedSize(true);
@@ -85,26 +89,32 @@ public class MainActivity extends AppCompatActivity implements FetchJSONAsyncTas
     private void callJsonParser(String json) {
         try {
             recipesData = new RecipeJSONParser().parseJson(json);
+            for (int i = 0; i < recipesData.recipeName.size(); i++) {
+                if (mFavouriteRecipeData != null && recipesData.recipeName.get(i).equals(mFavouriteRecipeData.recipeName.get(i)))
+                    continue;
+                else
+                    addDataToDb(i);
+            }
         } catch (JSONException ex) {
             Log.e(LOG_TAG, "JSON EXCEPTION");
         }
     }
 
-    private void addDataToDb(int id){
+    private void addDataToDb(int id) {
         mRecipeDbHelper = new RecipeDbHelper(this);
         // Convert List to JSON
         JSONObject ingredientsJson = new JSONObject();
         try {
             ingredientsJson.put("ingredients_json", new JSONArray(recipesData.recipeIngridient.get(Integer.toString(id + 1))));
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        String arrayList = ingredientsJson.toString();
-        mRecipeDbHelper.insertDateToTable(Integer.toString(id + 1), (String) recipesData.recipeName.get(id + 1), arrayList);
+        String ingredientJsonStr = ingredientsJson.toString();
+        mRecipeDbHelper.insertDateToTable(Integer.toString(id + 1), (String) recipesData.recipeName.get(id), ingredientJsonStr);
     }
 
     private void setMovieGridAdapter() {
-        mRecipeGridAdapter = new RecipeGridAdapter(this, recipesData.recipeName, this);
+        mRecipeGridAdapter = new RecipeGridAdapter(this, recipesData.recipeName, recipesData.recipeImage, this);
         mRecipeGrid.setAdapter(mRecipeGridAdapter);
     }
 
@@ -112,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements FetchJSONAsyncTas
     public void onGridItemClick(int itemIndex, String clickedItemName) {
 //        Toast.makeText(this, (String) recipesData.recipeName.get(itemIndex), Toast.LENGTH_LONG).show();
         if (clickedItemName.equals("FavBtn")) {
-            addDataToDb(itemIndex);
+//            addDataToDb(itemIndex);
             Toast.makeText(this, "Marked As Favourite", Toast.LENGTH_SHORT).show();
         } else {
             String index = Integer.toString(itemIndex + 1);
@@ -121,7 +131,9 @@ public class MainActivity extends AppCompatActivity implements FetchJSONAsyncTas
                     , recipesData.recipeStepDescription.get(index)
                     , recipesData.recipeStepInstruction.get(index)
                     , recipesData.recipeStepVideo.get(index)
-                    , (String) recipesData.recipeImage.get(itemIndex + 1));
+                    , (String) recipesData.recipeImage.get(itemIndex));
+            mSelectedRecipeData.itemIndex = itemIndex;
+            mSelectedRecipeData.stepImages = recipesData.recipeStepImage.get(index);
             Intent startRecipeDetailsIntent = new Intent(this, RecipeDetailsActivity.class);
             startRecipeDetailsIntent.putExtra(getString(R.string.recipe_intent_extra), mSelectedRecipeData);
             startActivity(startRecipeDetailsIntent);

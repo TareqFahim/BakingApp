@@ -18,17 +18,21 @@ import com.example.hope.bakingapp.utilities.SelectedRecipeData;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdapter.GridItemClickListener {
 
     private View rootView;
-    private RecyclerView mDetailsRecyclerView;
     private SelectedRecipeData mSelectedRecipeData;
     private RecipeDetailsAdapter mRecipeDetailsAdapter;
     private FragmentReplacerCallBack mFragmentReplacerCallBack;
     List recipeDetailsList;
+
+    @BindView(R.id.rv_recipe_details_list) RecyclerView mDetailsRecyclerView;
 
     public RecipeDetailsFragment() {
     }
@@ -51,7 +55,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_recipe_details, container, false);
-        mDetailsRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_recipe_details_list);
+        ButterKnife.bind(this, rootView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mDetailsRecyclerView.setLayoutManager(layoutManager);
         mDetailsRecyclerView.setHasFixedSize(true);

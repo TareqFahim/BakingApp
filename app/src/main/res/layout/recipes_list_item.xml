@@ -19,6 +19,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/recipe_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/recipe_title_tv"
                 android:layout_width="match_parent"
@@ -26,12 +31,6 @@
                 android:gravity="center"
                 android:text="Recipe Title"
                 android:textSize="30sp" />
-
-            <Button
-                android:id="@+id/fav_btn"
-                android:text="Mark As Favourite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

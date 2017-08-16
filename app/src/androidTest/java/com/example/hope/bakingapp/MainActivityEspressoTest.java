@@ -71,7 +71,7 @@ public class MainActivityEspressoTest {
     @Test
     public void checkRecipeDetails() throws Exception {
         onView(withId(R.id.rv_recipes_list))
-                .perform(RecyclerViewActions.scrollToPosition(0)).perform(click());
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.rv_recipe_details_list))
                 .perform(RecyclerViewActions.scrollToPosition(1)).perform(click());
 //        onView(withId(R.id.recipe_step_rv)).check(matches(hasDescendant(withId(R.id.exoplayer_view))));
@@ -79,5 +79,26 @@ public class MainActivityEspressoTest {
                 .perform(RecyclerViewActions.scrollTo(hasDescendant(withId(R.id.exoplayer_view))))
                 .check(matches(isDisplayed()));
 
+    }
+
+    @Test
+    public void checkTheNextButtonStep() throws Exception{
+        onView(withId(R.id.rv_recipes_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.rv_recipe_details_list))
+                .perform(RecyclerViewActions.scrollToPosition(1)).perform(click());
+        onView(withId(R.id.recipe_step_rv))
+                .perform(RecyclerViewActions.scrollTo(hasDescendant(withId(R.id.next_step_button))))
+                .perform(click());
+    }
+
+    @Test
+    public void checkIngredientsIsDisplayed()throws Exception{
+        onView(withId(R.id.rv_recipes_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.rv_recipe_details_list))
+                .perform(RecyclerViewActions.scrollToPosition(0)).perform(click());
+        onView(withId(R.id.rv_recipe_ingredients_list))
+                .perform(RecyclerViewActions.scrollTo(hasDescendant(withText((String) mRecipeData.recipeIngridient.get("1").get(0)))));
     }
 }

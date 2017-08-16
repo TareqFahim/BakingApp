@@ -14,5 +14,6 @@ public class RecipeData {
     public HashMap<String, ArrayList> recipeStepDescription = new HashMap();
     public HashMap<String, ArrayList> recipeStepInstruction = new HashMap();
     public HashMap<String, ArrayList> recipeStepVideo = new HashMap();
+    public HashMap<String, ArrayList> recipeStepImage = new HashMap<>();
     public List recipeImage = new ArrayList();
 }

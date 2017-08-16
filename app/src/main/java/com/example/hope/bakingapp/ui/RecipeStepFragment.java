@@ -29,6 +29,9 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 /**
@@ -39,12 +42,11 @@ public class RecipeStepFragment extends Fragment implements PlaybackControlView.
 
     View rootView;
     private SelectedRecipeData mSelectedRecipeData;
-    private Callback mCallback;
-    private RecyclerView mRecyclerView;
     private RecipeStepAdapter mRecipeStepAdapter;
-
-    private SimpleExoPlayerView mExoPlayerView;
     private SimpleExoPlayer mExoPlayer;
+    private SimpleExoPlayerView mExoPlayerView;
+
+    @BindView(R.id.recipe_step_rv) RecyclerView mRecyclerView;
 
     @Override
     public void onStart() {
@@ -55,28 +57,6 @@ public class RecipeStepFragment extends Fragment implements PlaybackControlView.
             if (getActivity().getResources().getConfiguration().orientation != ORIENTATION_LANDSCAPE) {
                 mRecipeStepAdapter = new RecipeStepAdapter(getActivity(), mSelectedRecipeData, this);
                 mRecyclerView.setAdapter(mRecipeStepAdapter);
-//                nextBtn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        itemIndex += 1;
-//                        mCallback = (Callback) getActivity();
-//                        mExoPlayer.stop();
-//                        mExoPlayer.release();
-//                        mCallback.fragmentCallback(itemIndex);
-//                        Log.v(TAG, Integer.toString(itemIndex));
-//                    }
-//                });
-//                previousBtn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        itemIndex -= 1;
-//                        mCallback = (Callback) getActivity();
-//                        mExoPlayer.stop();
-//                        mExoPlayer.release();
-//                        mCallback.fragmentCallback(itemIndex);
-//                        Log.v(TAG, Integer.toString(itemIndex));
-//                    }
-//                });
             } else {
                 Uri uri = Uri.parse((String) mSelectedRecipeData.stepsVideos.get(mSelectedRecipeData.itemIndex));
                 intializeExoplayer(uri);
@@ -92,7 +72,7 @@ public class RecipeStepFragment extends Fragment implements PlaybackControlView.
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_recipe_step, container, false);
         if (getActivity().getResources().getConfiguration().orientation != ORIENTATION_LANDSCAPE) {
-            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recipe_step_rv);
+            ButterKnife.bind(this, rootView);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setHasFixedSize(true);

@@ -5,12 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.hope.bakingapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Hope on 8/1/2017.
@@ -50,12 +54,12 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     }
 
     public class RecipeDetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView recipeCardTextView;
 
+        @BindView(R.id.details_card_tv) TextView recipeCardTextView;
 
         public RecipeDetailsViewHolder(View itemView) {
             super(itemView);
-            recipeCardTextView = (TextView) itemView.findViewById(R.id.details_card_tv);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

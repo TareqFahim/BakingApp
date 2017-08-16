@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hope.bakingapp.R;
 import com.example.hope.bakingapp.ui.RecipeStepFragment;
@@ -28,6 +29,9 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Hope on 8/9/2017.
@@ -62,11 +66,15 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
         this.viewHolder = viewHolder;
         viewHolder.instructionsTextView.setText((String) mSelectedRecipeData.stepsInstructions.get(mSelectedRecipeData.itemIndex));
 
-        if (mSelectedRecipeData.recipeImage.equals("")) {
+        if (mSelectedRecipeData.stepImages.get(position).equals("")) {
             viewHolder.imageView.setVisibility(View.GONE);
         } else {
             viewHolder.imageView.setVisibility(View.VISIBLE);
-            Picasso.with(c).load(mSelectedRecipeData.recipeImage).into(viewHolder.imageView);
+            try {
+                Picasso.with(c).load((String) mSelectedRecipeData.stepImages.get(position)).into(viewHolder.imageView);
+            }catch (Exception ex){
+                Toast.makeText(c, "Error Loading the Image", Toast.LENGTH_SHORT).show();
+            }
         }
 
         if (mSelectedRecipeData.stepsVideos.get(mSelectedRecipeData.itemIndex).equals("")) {
@@ -109,18 +117,20 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
 
     public class RecipeStepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView instructionsTextView;
-        public Button nextBtn, previousBtn;
-        public SimpleExoPlayerView mExoPlayerView;
-        public ImageView imageView;
+        @BindView(R.id.instructions_tv)
+        TextView instructionsTextView;
+        @BindView(R.id.next_step_button)
+        Button nextBtn;
+        @BindView(R.id.previous_step_button)
+        Button previousBtn;
+        @BindView(R.id.exoplayer_view)
+        SimpleExoPlayerView mExoPlayerView;
+        @BindView(R.id.recipe_step_imageview)
+        ImageView imageView;
 
         public RecipeStepViewHolder(View itemView) {
             super(itemView);
-            instructionsTextView = (TextView) itemView.findViewById(R.id.instructions_tv);
-            nextBtn = (Button) itemView.findViewById(R.id.next_step_button);
-            previousBtn = (Button) itemView.findViewById(R.id.previous_step_button);
-            imageView = (ImageView) itemView.findViewById(R.id.recipe_step_imageview);
-            mExoPlayerView = (SimpleExoPlayerView) itemView.findViewById(R.id.exoplayer_view);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
@@ -171,8 +181,6 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
     }
 
     public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        return context.getResources().getBoolean(R.bool.two_pane);
     }
 }

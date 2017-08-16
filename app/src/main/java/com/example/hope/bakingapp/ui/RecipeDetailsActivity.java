@@ -2,8 +2,10 @@ package com.example.hope.bakingapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,15 +25,20 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
     FragmentManager fragmentManager;
     boolean mTwoPane;
     private SelectedRecipeData mSelectedRecipeData;
+    SharedPreferences prefs;
     private int itemIndex;
 
     @Override
     protected void onStart() {
         super.onStart();
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
         Intent getIntent = getIntent();
         if(getIntent.hasExtra(getString(R.string.recipe_intent_extra))){
             mSelectedRecipeData = getIntent.getParcelableExtra(getString(R.string.recipe_intent_extra));
             itemIndex = mSelectedRecipeData.itemIndex;
+            editor.putInt(getString(R.string.preferences_recipe_index), itemIndex);
+            editor.commit();
         }
     }
 
@@ -58,10 +65,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements Fragment
         }
     }
 
-    public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    public boolean isTablet(Context context) {
+        return getResources().getBoolean(R.bool.two_pane);
     }
 
     @Override

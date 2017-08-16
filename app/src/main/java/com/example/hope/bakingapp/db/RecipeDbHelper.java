@@ -14,7 +14,7 @@ import com.example.hope.bakingapp.widget.RecipeWidgetProvider;
 
 public class RecipeDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "favorite_recipes.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
 
     public RecipeDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
